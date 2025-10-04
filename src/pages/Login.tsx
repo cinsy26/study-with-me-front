@@ -2,8 +2,8 @@ import React from "react";
 import KakaoLoginButton from "../components/button/KakaoLogin-Button.tsx";
 
 export default function Login() {
-  const REST_API_KEY = "4546d6807fe06adecde8329fd77f7a3a"; // Kakao Developers REST API 키
-  const REDIRECT_URI = "http://localhost:8080/login/oauth2/code/kakao"; // 백엔드 redirect URI
+  const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
+  const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   return (
