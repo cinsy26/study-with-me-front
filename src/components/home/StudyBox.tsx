@@ -1,8 +1,11 @@
 import React from "react";
 import SearchStudy from "./SearchStudy.tsx";
 import RectangleButton from "../button/Rectangle-Button.tsx";
+import { useNavigate } from "react-router-dom";
 
 export default function StudyBox() {
+  const navigate = useNavigate();
+
   return (
     <div
       className="
@@ -16,7 +19,7 @@ export default function StudyBox() {
         color="#D9D9D9"
         width="400px"
         fontSize="16px"
-        onClick={() => alert("검색 버튼 클릭, 나중에 검색하는 걸로 교체")}>
+        onClick={() => navigate("/study/create")}>
         새로운 스터디 만들기
       </RectangleButton>
     </div>

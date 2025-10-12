@@ -2,8 +2,11 @@ import React from "react";
 import Menu from "./Menu.tsx";
 import Logo from "./Logo.tsx";
 import Mypage from "./Mypage.tsx";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
+  const navigate = useNavigate();
+
   return (
     <div
       className="
@@ -17,8 +20,8 @@ export default function Header() {
 
             ">
       <Logo />
-      <Menu text="홈" />
-      <Menu text="내스터디" />
+      <Menu text="홈" onClick={() => navigate("/")} />
+      <Menu text="내스터디" onClick={() => navigate("/study/mystudy")} />
       <Menu text="마이페이지" />
       <Mypage />
     </div>

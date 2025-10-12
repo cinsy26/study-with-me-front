@@ -1,7 +1,12 @@
 import React from "react";
 import RectangleButton from "../button/Rectangle-Button.tsx";
 
-export default function PointBox() {
+//부모(Home)로부터 point를 props로 받기
+interface PointBoxProps {
+  point: number;
+}
+
+export default function PointBox({ point }: PointBoxProps) {
   return (
     <div
       className="
@@ -28,7 +33,7 @@ export default function PointBox() {
             h-[40px]
             text-[20px]
             ">
-        25,000
+        {point.toLocaleString()}
       </div>
       <div
         className="
