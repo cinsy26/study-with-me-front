@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import StudyCard from "../../components/study/StudyCard.tsx";
 import { FetchMyStudies } from "../../api/study/FetchMyStudies.ts";
+import { FetchStudyDetail } from "../../api/study/FetchStudyDetail.ts";
 
 interface Study {
   id: number;
@@ -37,15 +38,26 @@ const MyStudies: React.FC = () => {
   };
 
   const handleCreateStudy = () => {
-    navigate("/studies/create");
+    navigate("/study/create");
   };
 
   const handleSearchStudy = () => {
     navigate("/studies/search");
   };
 
-  const handleStudyClick = (studyId: number) => {
-    navigate(`/studies/${studyId}`);
+  const handleStudyClick = async (studyId: number) => {
+    try {
+      const detail = await FetchStudyDetail(studyId); // ✅ 상세 정보 API 호출
+      console.log("스터디 상세정보:", detail);
+
+      // ✅ 상세 페이지로 이동하며 state로 전달 (필요 시)
+      navigate(`/study/studyinfo/${studyId}`, {
+        state: { studyDetail: detail },
+      });
+    } catch (error) {
+      console.error("스터디 상세 조회 실패:", error);
+      alert("스터디 상세 정보를 불러오지 못했습니다.");
+    }
   };
 
   // 로딩 중

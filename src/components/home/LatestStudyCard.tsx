@@ -1,6 +1,6 @@
 import React from "react";
 
-interface OngoingStudyCardProps {
+interface LatestStudyCardProps {
   id: number;
   title: string;
   description: string;
@@ -9,11 +9,10 @@ interface OngoingStudyCardProps {
   currentMemberCount: number;
   startDate: string;
   endDate: string;
-  role?: "LEADER" | "MEMBER";
   onClick?: (studyId: number) => void;
 }
 
-const OngoingStudyCard: React.FC<OngoingStudyCardProps> = ({
+const LatestStudyCard: React.FC<LatestStudyCardProps> = ({
   id,
   title,
   description,
@@ -22,7 +21,6 @@ const OngoingStudyCard: React.FC<OngoingStudyCardProps> = ({
   currentMemberCount,
   startDate,
   endDate,
-  role,
   onClick,
 }) => {
   const getStatusBadge = (status: string) => {
@@ -42,17 +40,17 @@ const OngoingStudyCard: React.FC<OngoingStudyCardProps> = ({
     );
   };
 
-  const getRoleBadge = (role: string) => {
-    return role === "LEADER" ? (
-      <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-        리더
-      </span>
-    ) : (
-      <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-        멤버
-      </span>
+  // ✅ 시작일까지 남은 일수 계산
+  const calculateDaysUntilStart = (startDate: string): number => {
+    const today = new Date();
+    const start = new Date(startDate);
+    const diff = Math.ceil(
+      (start.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
     );
+    return diff > 0 ? diff : 0;
   };
+
+  const daysUntilStart = calculateDaysUntilStart(startDate);
 
   const handleClick = () => {
     if (onClick) onClick(id);
@@ -62,19 +60,27 @@ const OngoingStudyCard: React.FC<OngoingStudyCardProps> = ({
     <div
       onClick={handleClick}
       className="w-full bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-200 cursor-pointer flex flex-col justify-between">
+      {/* 상단: 제목 + 상태 */}
       <div className="flex justify-between items-start mb-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-2 flex-wrap">
             <h2 className="text-xl font-bold text-gray-900 truncate">
               {title}
             </h2>
-            {role && getRoleBadge(role)}
             {getStatusBadge(status)}
           </div>
           <p className="text-gray-600 line-clamp-2">{description}</p>
         </div>
+
+        {/* ✅ 모집 마감까지 N일 남음 */}
+        {daysUntilStart > 0 && (
+          <span className="ml-3 px-2 py-1 text-xs font-semibold bg-yellow-100 text-yellow-800 rounded-md whitespace-nowrap">
+            모집 마감까지 {daysUntilStart}일
+          </span>
+        )}
       </div>
 
+      {/* 하단: 인원 + 기간 */}
       <div className="flex flex-wrap gap-4 text-sm text-gray-600 mt-auto pt-3 border-t border-gray-100">
         <div className="flex items-center gap-1">
           <svg
@@ -115,4 +121,4 @@ const OngoingStudyCard: React.FC<OngoingStudyCardProps> = ({
   );
 };
 
-export default OngoingStudyCard;
+export default LatestStudyCard;
